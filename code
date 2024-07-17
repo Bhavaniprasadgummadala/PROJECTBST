@@ -81,6 +81,31 @@ Node* deleteNode(Node* root, int key) {
     return root;
 }
 
+// Function to print the tree in level-order (breadth-first) traversal
+void printLevelOrder(Node* root) {
+    if (root == NULL) {
+        return;
+    }
+    queue<Node*> q;
+    q.push(root);
+    while (!q.empty()) {
+        int nodeCount = q.size();
+        while (nodeCount > 0) {
+            Node* node = q.front();
+            cout << node->key << " ";
+            q.pop();
+            if (node->left != NULL) {
+                q.push(node->left);
+            }
+            if (node->right != NULL) {
+                q.push(node->right);
+            }
+            nodeCount--;
+        }
+        cout << endl;
+    }
+}
+
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
@@ -98,6 +123,10 @@ int main() {
         root = insert(root, val);
     }
 
+    cout << "Tree structure after insertion:" << endl;
+    printLevelOrder(root);
+    cout << endl;
+
     int key;
     cout << "Enter key to search: ";
     cin >> key;
@@ -107,9 +136,17 @@ int main() {
         cout << "Key " << key << " not found in the tree." << endl;
     }
 
+    cout << "Tree structure after search:" << endl;
+    printLevelOrder(root);
+    cout << endl;
+
     cout << "Enter key to delete: ";
     cin >> key;
     root = deleteNode(root, key);
+
+    cout << "Tree structure after deletion:" << endl;
+    printLevelOrder(root);
+    cout << endl;
 
     return 0;
 }
