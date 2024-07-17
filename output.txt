@@ -1,2 +1,16 @@
+Tree structure after insertion:
+10 
+5 20 
+15 25 
+
 Enter key to search: Key 0 not found in the tree.
-Enter key to delete: 
+Tree structure after search:
+10 
+5 20 
+15 25 
+
+Enter key to delete: Tree structure after deletion:
+10 
+5 20 
+15 25 
+
