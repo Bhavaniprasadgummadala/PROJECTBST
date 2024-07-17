@@ -1,0 +1,115 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define endl '\n'
+
+// Struct for Node
+struct Node {
+    int key;
+    Node* left;
+    Node* right;
+};
+
+// Function to create a new Node
+Node* newNode(int key) {
+    Node* root = new Node;
+    root->key = key;
+    root->right = NULL;
+    root->left = NULL;
+    return root;
+}
+
+/* Take root node and key value and inserts node with value as key.
+   returns the modified tree (or root node)
+*/
+Node* insert(Node* root, int val) {
+    if (root == NULL) {
+        return newNode(val);
+    }
+    if (root->key > val) {
+        root->left = insert(root->left, val);
+    } else if (root->key < val) {
+        root->right = insert(root->right, val);
+    }
+    return root;
+}
+
+// Function to search for a node with a given key
+Node* search(Node* root, int key) {
+    if (root == NULL || root->key == key) {
+        return root;
+    }
+    if (root->key > key) {
+        return search(root->left, key);
+    }
+    return search(root->right, key);
+}
+
+// Helper function to find the node with the minimum key value
+Node* findMin(Node* root) {
+    while (root->left != NULL) {
+        root = root->left;
+    }
+    return root;
+}
+
+// Function to delete a node with a given key
+Node* deleteNode(Node* root, int key) {
+    if (root == NULL) {
+        return root;
+    }
+    if (key < root->key) {
+        root->left = deleteNode(root->left, key);
+    } else if (key > root->key) {
+        root->right = deleteNode(root->right, key);
+    } else {
+        // Node with only one child or no child
+        if (root->left == NULL) {
+            Node* temp = root->right;
+            delete root;
+            return temp;
+        } else if (root->right == NULL) {
+            Node* temp = root->left;
+            delete root;
+            return temp;
+        }
+        // Node with two children: Get the inorder successor (smallest in the right subtree)
+        Node* temp = findMin(root->right);
+        root->key = temp->key;
+        root->right = deleteNode(root->right, temp->key);
+    }
+    return root;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+
+    Node* root = NULL;
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        int val;
+        cin >> val;
+        root = insert(root, val);
+    }
+
+    int key;
+    cout << "Enter key to search: ";
+    cin >> key;
+    if (search(root, key) != NULL) {
+        cout << "Key " << key << " found in the tree." << endl;
+    } else {
+        cout << "Key " << key << " not found in the tree." << endl;
+    }
+
+    cout << "Enter key to delete: ";
+    cin >> key;
+    root = deleteNode(root, key);
+
+    return 0;
+}
